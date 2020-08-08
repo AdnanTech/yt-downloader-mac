@@ -8,7 +8,7 @@
 # Add option to log into yt so you can download private playlists
 # Add functionality to switch between Windows & Mac OS
 
-#bin adnan$ -----> sudo pip3 install pytube3 https://www.youtube.com/watch?v=N-sVG_g8eD0
+#bin adnan$ -----> sudo pip3 install pytube3
 
 # I have fixed this issue by changing a few lines in extract.py
 
@@ -18,7 +18,7 @@
 # cipher_url = [
 #                 parse_qs(formats[i]["signatureCipher"]) for i, data in enumerate(formats)
 #             ]
-
+# https://www.youtube.com/watch?v=0M4nKru2H_Q
 
 # ----------------------------------- SOURCE CODE -----------------------------------
 from datetime import datetime
@@ -117,10 +117,6 @@ def playlist():
         playlist = list(dict.fromkeys(playlist))
         print("Length of playlist: " + str((len(playlist) - 2)))
 
-        # outputs all the links in the playlist
-        # for x in playlist:
-        #     print(x)
-
         # First link will be a duplicate with a different URL, because thats how YouTube playlists work
         # The algorithm of collecting a playlist is abstract, the beginning of every scrape there are 2 links that are songs,
         # but not actually indexed to the playlist, so we start from the third link, which is the beginning of the playlist
@@ -168,27 +164,23 @@ def clear():
 
 def music():
     while True:
-        try:
-            url = input("Enter the URL or (e)xit: ")
-            if url == 'e':
-                break
-            else:
-                youtube = YouTube(url)
-                print(youtube.title)
-
-                video = youtube.streams.filter(only_audio=True).first()
-                file_download = video.download(directory_path)
-
-                name_pref = input("Do you want to rename this files (y/n): ")
-                if name_pref == 'y':
-                    new_file_name = input("New file name: ")
-                    print((new_file_name  + '.mp3'))
-                    os.rename(file_download, (directory_path + '/' + new_file_name  + '.mp3'))
-                elif name_pref == 'n':
-                    os.rename(file_download, file_download[0:-4]  + '.mp3')
-        except:
-            print("An error has occurred.")
+        url = input("Enter the URL or (e)xit: ")
+        if url == 'e':
             break
+        else:
+            youtube = YouTube(url)
+            print(youtube.title)
+
+            video = youtube.streams.filter(only_audio=True).first()
+            file_download = video.download(directory_path)
+
+            name_pref = input("Do you want to rename this files (y/n): ")
+            if name_pref == 'y':
+                new_file_name = input("New file name: ")
+                print((new_file_name  + '.mp3'))
+                os.rename(file_download, (directory_path + '\\' + new_file_name  + '.mp3'))
+            elif name_pref == 'n':
+                os.rename(file_download, file_download[0:-4]  + '.mp3')
 
 
 if __name__ == '__main__':
