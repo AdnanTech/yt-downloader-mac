@@ -177,8 +177,7 @@ def music():
                 if name_pref == 'y':
                     new_file_name = input("New file name: ")
                     print((new_file_name  + '.mp3'))
-                    print(file_download)
-                    os.rename(file_download, ('downloads\\' + new_file_name  + '.mp3'))
+                    os.rename(file_download, ('downloads/' + new_file_name  + '.mp3'))
                 elif name_pref == 'n':
                     os.rename(file_download, file_download[0:-4]  + '.mp3')
         except:
