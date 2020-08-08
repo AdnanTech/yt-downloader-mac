@@ -33,23 +33,11 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 def menu():
-    while True:
-        username = getpass.getuser()
-        global directory_path
-        directory_path = input("Default directory, Adnan's Laptop, Macbook or Sameer? (d/aw/am/s): ").lower()
-        if directory_path == 'aw' or directory_path == 'am' or directory_path == 's' or directory_path == 'd':
 
-            # Default dir is the folder
-            if directory_path == 'd':
-                directory_path = 'downloads'
-                print(directory_path)
-            elif directory_path == 'aw':
-                directory_path = r"C:\Users\Adnan\Documents\GitHub\yt-downloader\data"
-            elif directory_path == 'am' or directory_path == 's':
-                directory_path = r"C:\Users" + '\\' + username + '\\' + r"Desktop"
-                print(directory_path)
-            break
-
+    username = getpass.getuser()
+    global directory_path
+    # Default dir is the folder
+    directory_path = 'downloads'
 
     print("\n------------------------------------------------------------------------------------------ ")
     print("----------------------------------    Hello, " + username + "     ----------------------------------- ")
@@ -88,7 +76,7 @@ def videos():
                     video.download(directory_path)
                     file_download = video.download(directory_path)
                     print((new_file_name  + '.mp4'))
-                    os.rename(file_download, (directory_path + '\\' + new_file_name  + '.mp4'))
+                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
                 elif name_pref == 'n':
                     video = youtube.streams.filter(res="720p").first()
                     video.download(directory_path) 
@@ -130,7 +118,7 @@ def playlist():
                     new_file_name = input("New file name: ")
                     print((new_file_name  + '.mp3'))
                     # changes file to mp3
-                    os.rename(file_download, (directory_path + '\\' + new_file_name  + '.mp3'))
+                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp3'))
                     try:
                         os.remove(file_download)
                     except:
@@ -177,7 +165,7 @@ def music():
                 if name_pref == 'y':
                     new_file_name = input("New file name: ")
                     print((new_file_name  + '.mp3'))
-                    os.rename(file_download, ('downloads/' + new_file_name  + '.mp3'))
+                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp3'))
                 elif name_pref == 'n':
                     os.rename(file_download, file_download[0:-4]  + '.mp3')
         except:
