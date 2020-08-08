@@ -18,7 +18,8 @@
 # cipher_url = [
 #                 parse_qs(formats[i]["signatureCipher"]) for i, data in enumerate(formats)
 #             ]
-# https://www.youtube.com/watch?v=0M4nKru2H_Q
+
+# https://webkit.org/blog/6900/webdriver-support-in-safari-10/
 
 # ----------------------------------- SOURCE CODE -----------------------------------
 from datetime import datetime
@@ -45,11 +46,9 @@ def menu():
 
 
     while True:
-        userInput = input("Do you want to (c)lear existing files, download a (p)laylist, (v)ideos, (m)usic or (e)xit: ").lower()
+        userInput = input("Do you want to (c)lear existing files, download a (p)laylist, (m)usic or (e)xit: ").lower()
         if userInput == 'p':
             playlist()
-        elif userInput == 'v':
-            videos()
         elif userInput == 'm':
             music()
         elif userInput == "c":
@@ -57,50 +56,8 @@ def menu():
         elif userInput == 'e':
             os._exit(0)
 
-def videos():
-    while True:
-        try:
-            url = input("Enter the URL or (e)xit: ")
-            if url == 'e':
-                break
-            else:
-                youtube = YouTube(url)
-                print(youtube.title)
-
-                # try:
-                #     video = youtube.streams.filter(res="720p").first()
-                # except:
-                #     if video is None:
-                #         video = youtube.streams.filter(res="480p").first()
-                #         break
-                #     print("An error has occuted")
-                
-
-                video = youtube.streams.filter(res="720p").first()
-                if video is None:
-                    video = youtube.streams.filter(res="480p").first()
-
-                file_download = video.download(directory_path)
-
-                name_pref = input("Do you want to rename these files? (y/n): ")
-                if name_pref == 'y':
-                    new_file_name = input("New file name: ")
-                    # video = youtube.streams.filter(res="720p").first()
-                    print((new_file_name  + '.mp4'))
-                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
-                elif name_pref == 'n':
-                    # video = youtube.streams.filter(res="720p").first()
-                    # video.download(directory_path)
-                    os.rename(file_download, file_download)
-        except:
-            print("An error has occurred")
-# https://webkit.org/blog/6900/webdriver-support-in-safari-10/
 def playlist():
-
-    # https://www.youtube.com/playlist?list=PLji_JFv1uqQ51kWBmBxR9RB9YVUMo3q-r
-
     playlist=[]
-
     url = input("Enter URL of the PLAYLIST: ")
 
     driver = webdriver.Safari()
@@ -121,7 +78,6 @@ def playlist():
     # but not actually indexed to the playlist, so we start from the third link, which is the beginning of the playlist
 
     name_pref = input("Do you want to rename these files? (y/n): ")
-
     if name_pref == 'y':
         for l in range(2, len(playlist)):
                 youtube = YouTube(playlist[l])
