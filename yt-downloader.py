@@ -59,30 +59,26 @@ def menu():
 
 def videos():
     while True:
-        try:
-            url = input("Enter the URL or (e)xit: ")
-            if url == 'e':
-                break
-            else:
-                youtube = YouTube(url)
-                print(youtube.title)
-
-                video = youtube.streams.first()
-                name_pref = input("Do you want to rename these files? (y/n): ")
-
-                if name_pref == 'y':
-                    new_file_name = input("New file name: ")
-                    video = youtube.streams.filter(res="720p").first()
-                    video.download(directory_path)
-                    file_download = video.download(directory_path)
-                    print((new_file_name  + '.mp4'))
-                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
-                elif name_pref == 'n':
-                    video = youtube.streams.filter(res="720p").first()
-                    video.download(directory_path) 
-        except:
-            print("An error has occured")
+        url = input("Enter the URL or (e)xit: ")
+        if url == 'e':
             break
+        else:
+            youtube = YouTube(url)
+            print(youtube.title)
+
+            video = youtube.streams.first()
+            name_pref = input("Do you want to rename these files? (y/n): ")
+
+            if name_pref == 'y':
+                new_file_name = input("New file name: ")
+                video = youtube.streams.filter(res="720p").first()
+                video.download(directory_path)
+                file_download = video.download(directory_path)
+                print((new_file_name  + '.mp4'))
+                os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
+            elif name_pref == 'n':
+                video = youtube.streams.filter(res="720p").first()
+                video.download(directory_path) 
 
 def playlist():
     try:
