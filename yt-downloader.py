@@ -41,10 +41,8 @@ def menu():
 
             # Default dir is the folder
             if directory_path == 'd':
-                current_working_directory = os.getcwd()
-                current_working_directory = current_working_directory + '\\data'
-                print(current_working_directory)
-                directory_path = current_working_directory
+                directory_path = 'downloads'
+                print(directory_path)
             elif directory_path == 'aw':
                 directory_path = r"C:\Users\Adnan\Documents\GitHub\yt-downloader\data"
             elif directory_path == 'am' or directory_path == 's':
@@ -180,7 +178,7 @@ def music():
                     new_file_name = input("New file name: ")
                     print((new_file_name  + '.mp3'))
                     print(file_download)
-                    os.rename(file_download, (directory_path + '\\/' + new_file_name  + '.mp3'))
+                    os.rename(file_download, ('downloads\\' + new_file_name  + '.mp3'))
                 elif name_pref == 'n':
                     os.rename(file_download, file_download[0:-4]  + '.mp3')
         except:
