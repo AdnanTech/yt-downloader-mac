@@ -164,23 +164,27 @@ def clear():
 
 def music():
     while True:
-        url = input("Enter the URL or (e)xit: ")
-        if url == 'e':
+        try:
+            url = input("Enter the URL or (e)xit: ")
+            if url == 'e':
+                break
+            else:
+                youtube = YouTube(url)
+                print(youtube.title)
+
+                video = youtube.streams.filter(only_audio=True).first()
+                file_download = video.download(directory_path)
+
+                name_pref = input("Do you want to rename this files (y/n): ")
+                if name_pref == 'y':
+                    new_file_name = input("New file name: ")
+                    print((new_file_name  + '.mp3'))
+                    os.rename(file_download, (directory_path + '\\' + new_file_name  + '.mp3'))
+                elif name_pref == 'n':
+                    os.rename(file_download, file_download[0:-4]  + '.mp3')
+        except:
+            print("An error has occurred.")
             break
-        else:
-            youtube = YouTube(url)
-            print(youtube.title)
-
-            video = youtube.streams.filter(only_audio=True).first()
-            file_download = video.download(directory_path)
-
-            name_pref = input("Do you want to rename this files (y/n): ")
-            if name_pref == 'y':
-                new_file_name = input("New file name: ")
-                print((new_file_name  + '.mp3'))
-                os.rename(file_download, (directory_path + '\\' + new_file_name  + '.mp3'))
-            elif name_pref == 'n':
-                os.rename(file_download, file_download[0:-4]  + '.mp3')
 
 
 if __name__ == '__main__':
