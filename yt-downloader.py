@@ -66,7 +66,7 @@ def videos():
             youtube = YouTube(url)
             print(youtube.title)
 
-            try:
+            # try:
             #     video = youtube.streams.filter(res="720p").first()
             # except:
             #     if video is None:
@@ -76,6 +76,9 @@ def videos():
             
 
             video = youtube.streams.filter(res="720p").first()
+            if video is None:
+                video = youtube.streams.filter(res="480p").first()
+
             file_download = video.download(directory_path)
 
             name_pref = input("Do you want to rename these files? (y/n): ")
