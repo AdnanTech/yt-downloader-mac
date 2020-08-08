@@ -59,90 +59,93 @@ def menu():
 
 def videos():
     while True:
-        url = input("Enter the URL or (e)xit: ")
-        if url == 'e':
-            break
-        else:
-            youtube = YouTube(url)
-            print(youtube.title)
+        try:
+            url = input("Enter the URL or (e)xit: ")
+            if url == 'e':
+                break
+            else:
+                youtube = YouTube(url)
+                print(youtube.title)
 
-            # try:
-            #     video = youtube.streams.filter(res="720p").first()
-            # except:
-            #     if video is None:
-            #         video = youtube.streams.filter(res="480p").first()
-            #         break
-            #     print("An error has occuted")
-            
+                # try:
+                #     video = youtube.streams.filter(res="720p").first()
+                # except:
+                #     if video is None:
+                #         video = youtube.streams.filter(res="480p").first()
+                #         break
+                #     print("An error has occuted")
+                
 
-            video = youtube.streams.filter(res="720p").first()
-            if video is None:
-                video = youtube.streams.filter(res="480p").first()
+                video = youtube.streams.filter(res="720p").first()
+                if video is None:
+                    video = youtube.streams.filter(res="480p").first()
 
-            file_download = video.download(directory_path)
+                file_download = video.download(directory_path)
 
-            name_pref = input("Do you want to rename these files? (y/n): ")
-            if name_pref == 'y':
-                new_file_name = input("New file name: ")
-                # video = youtube.streams.filter(res="720p").first()
-                print((new_file_name  + '.mp4'))
-                os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
-            elif name_pref == 'n':
-                # video = youtube.streams.filter(res="720p").first()
-                # video.download(directory_path)
-                os.rename(file_download, file_download)
-
-def playlist():
-    try:
-        playlist=[]
-
-        url = input("Enter URL of the PLAYLIST: ")
-
-        driver = webdriver.Safari()
-        driver.get(url)
-        links = driver.find_elements_by_xpath("//a[@href]")
-        for link in links:
-            href = link.get_attribute("href")
-            if href.startswith('https://www.youtube.com/watch?v='):
-                playlist.append(href)
-        driver.close()
-
-        #Gets rid of duplicate links
-        playlist = list(dict.fromkeys(playlist))
-        print("Length of playlist: " + str((len(playlist) - 2)))
-
-        # First link will be a duplicate with a different URL, because thats how YouTube playlists work
-        # The algorithm of collecting a playlist is abstract, the beginning of every scrape there are 2 links that are songs,
-        # but not actually indexed to the playlist, so we start from the third link, which is the beginning of the playlist
-
-        name_pref = input("Do you want to rename these files? (y/n): ")
-
-        if name_pref == 'y':
-            for l in range(2, len(playlist)):
-                    youtube = YouTube(playlist[l])
-                    print(youtube.title)
-                    video = youtube.first()
-                    file_download = video.download(directory_path)
+                name_pref = input("Do you want to rename these files? (y/n): ")
+                if name_pref == 'y':
                     new_file_name = input("New file name: ")
-                    print((new_file_name  + '.mp3'))
-                    # changes file to mp3
-                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp3'))
-                    try:
-                        os.remove(file_download)
-                    except:
-                        pass
-        elif name_pref == 'n':
-            for l in range(2, len(playlist)):
-                    youtube = YouTube(playlist[l])
-                    # print(youtube.title + ' - ' + playlist[l])
-                    print(youtube.title)
-                    video = youtube.streams.filter(only_audio=True).first()
-                    file_download = video.download(directory_path)
-                    # changes file to mp3
-                    os.rename(file_download, file_download[0:-4]  + '.mp3')
-        print("Playlist downloaded successfully")
-    except:
-        print("An error occurred.")
+                    # video = youtube.streams.filter(res="720p").first()
+                    print((new_file_name  + '.mp4'))
+                    os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp4'))
+                elif name_pref == 'n':
+                    # video = youtube.streams.filter(res="720p").first()
+                    # video.download(directory_path)
+                    os.rename(file_download, file_download)
+        except:
+            print("An error has occurred")
+# https://webkit.org/blog/6900/webdriver-support-in-safari-10/
+def playlist():
+
+    # https://www.youtube.com/playlist?list=PLji_JFv1uqQ51kWBmBxR9RB9YVUMo3q-r
+
+    playlist=[]
+
+    url = input("Enter URL of the PLAYLIST: ")
+
+    driver = webdriver.Safari()
+    driver.get(url)
+    links = driver.find_elements_by_xpath("//a[@href]")
+    for link in links:
+        href = link.get_attribute("href")
+        if href.startswith('https://www.youtube.com/watch?v='):
+            playlist.append(href)
+    driver.close()
+
+    #Gets rid of duplicate links
+    playlist = list(dict.fromkeys(playlist))
+    print("Length of playlist: " + str((len(playlist) - 2)))
+
+    # First link will be a duplicate with a different URL, because thats how YouTube playlists work
+    # The algorithm of collecting a playlist is abstract, the beginning of every scrape there are 2 links that are songs,
+    # but not actually indexed to the playlist, so we start from the third link, which is the beginning of the playlist
+
+    name_pref = input("Do you want to rename these files? (y/n): ")
+
+    if name_pref == 'y':
+        for l in range(2, len(playlist)):
+                youtube = YouTube(playlist[l])
+                print(youtube.title)
+                video = youtube.streams.filter(only_audio=True).first()
+                file_download = video.download(directory_path)
+                new_file_name = input("New file name: ")
+                print((new_file_name  + '.mp3'))
+                # changes file to mp3
+                os.rename(file_download, ('downloads' + '/' + new_file_name  + '.mp3'))
+                try:
+                    os.remove(file_download)
+                except:
+                    pass
+    elif name_pref == 'n':
+        for l in range(2, len(playlist)):
+                youtube = YouTube(playlist[l])
+                # print(youtube.title + ' - ' + playlist[l])
+                print(youtube.title)
+                video = youtube.streams.filter(only_audio=True).first()
+                file_download = video.download(directory_path)
+                # changes file to mp3
+                os.rename(file_download, file_download[0:-4]  + '.mp3')
+    print("Playlist downloaded successfully")
 
 def clear():
     dirpath = directory_path
